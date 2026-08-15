@@ -68,5 +68,5 @@ jobs:
           python-version: ${{ matrix.python }}
           allow-prereleases: true
       - run: rustup override set nightly
-      - run: python -m pip install -v . -Cbuild-dir=_build -Ccompile -args=-v ${{ matrix.options }}
+      - run: python -m pip install -v . -Cbuild-dir=_build -Ccompile-args=-v ${{ matrix.options }}
       - run: python -m unittest -v test.py
