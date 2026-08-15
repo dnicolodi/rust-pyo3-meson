@@ -15,7 +15,7 @@ MAXIMUM_SUPPORTED_VERSION_PYPY_MINOR = 11
 extra_args = []
 extra_deps = []
 
-# Registers `pyo3`s config names as reachable cfg expressions.
+# Registers PyO3's config names as reachable cfg expressions.
 extra_args += [
   '--check-cfg', 'cfg(Py_LIMITED_API)',
   '--check-cfg', 'cfg(Py_GIL_DISABLED)',
@@ -25,21 +25,21 @@ extra_args += [
   '--check-cfg', 'cfg(py_sys_config, values("Py_DEBUG", "Py_REF_DEBUG", "Py_TRACE_REFS", "COUNT_ALLOCS"))',
 ]
 
-# Allow `Py_3_*` cfgs from the minimum supported version up to the
-# maximum minor version (+1 for development for the next).
+# Allow 'Py_3_{minor}' cfgs from the minimum supported version up to
+# the maximum minor version (+1 for development for the next).
 foreach i : range(MINIMUM_SUPPORTED_VERSION_MINOR, STABLE_ABI_MAX_MINOR + 2)
   extra_args += ['--check-cfg', f'cfg(Py_3_@i@)']
 endforeach
 
-# pyo3_dll cfg for raw-dylib linking on Windows.
+# Allow all possible 'pyo3_dll' cfg values for raw-dylib linking on Windows.
 dll_names = ['python3', 'python3_d', 'python3t', 'python3t_d']
+# CPython DLL names.
 foreach i : range(MINIMUM_SUPPORTED_VERSION_MINOR, STABLE_ABI_MAX_MINOR + 2)
   dll_names += [f'python3@i@', f'python3@i@_d']
   if i >= 13
     dll_names += [f'python3@i@t', f'python3@i@t_d']
   endif
 endforeach
-
 # PyPy DLL names.
 foreach i : range(MINIMUM_SUPPORTED_VERSION_PYPY_MINOR, MAXIMUM_SUPPORTED_VERSION_PYPY_MINOR + 1)
   dll_names += [f'libpypy3.@i@-c']
@@ -155,7 +155,7 @@ if is_windows
   if get_option('use_raw_dylib')
     extra_args += ['--cfg', 'pyo3_use_raw_dylib', '--cfg', f'pyo3_dll="@py_lib_name@"']
   else
-    extra_args += ['--link-lib', f'pythonXY:@py_lib_name@']
+    extra_args += ['-l', f'pythonXY:@py_lib_name@']
     extra_deps += py.dependency()
   endif
 else
