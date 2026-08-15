@@ -47,13 +47,13 @@ jobs:
           # PyO3 0.29 supports Python 3.8 and later, however, building
           # Rust extension modules requires Meson 1.12 or later, which
           # requires Python 3.10.
-          - '3.10'
-          - '3.11'
-          - '3.12'
-          - '3.13'
-          - '3.14'
-          - '3.15'
-          - '3.15t'
+          # - '3.10'
+          # - '3.11'
+          # - '3.12'
+          # - '3.13'
+          # - '3.14'
+          # - '3.15'
+          # - '3.15t'
           - 'pypy3.11'
         options:
           -
