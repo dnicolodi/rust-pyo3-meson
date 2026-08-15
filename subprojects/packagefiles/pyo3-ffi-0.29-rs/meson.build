@@ -2,7 +2,7 @@ project(
   'pyo3-ffi',
   'rust',
   meson_version : '>= 1.12',
-  version : '0.29.0',
+  version : '0.29.2',
   #default_options : {'warning_level' : '0'},
   license : 'MIT OR Apache-2.0'
 )
