@@ -54,6 +54,13 @@ jobs:
           - '3.14'
           - '3.15'
           - '3.15t'
+          - 'pypy3.11'
+        options:
+          -
+        include:
+          - os: windows-latest
+            python: '3.14'
+            options: '-Csetup-args="-Dpyo3-ffi-0.29-rs:use_raw_dylib=false"'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -61,5 +68,5 @@ jobs:
           python-version: ${{ matrix.python }}
           allow-prereleases: true
       - run: rustup override set nightly
-      - run: python -m pip install . -Cbuild-dir=_build
+      - run: python -m pip install -v . -Cbuild-dir=_build -Ccompile -args=-v ${{ matrix.options }}
       - run: python -m unittest -v test.py
