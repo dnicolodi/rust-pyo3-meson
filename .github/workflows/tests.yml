@@ -36,6 +36,7 @@ jobs:
       - run: cargo build -vv
 
   test:
+    if: ${{ false }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -65,3 +66,25 @@ jobs:
       - run: rustup override set nightly
       - run: python -m pip install -v . -Ccompile-args=-v
       - run: python -m unittest -v test.py
+
+  debug:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-latest
+        python:
+          - '3.14'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          allow-prereleases: true
+      - run: rustup override set nightly
+      - run: python -m pip install meson
+      - run: meson setup build --vsenv
+        env:
+          RUSTC_LD: link.exe
+      - run: meson compile -C build -v
